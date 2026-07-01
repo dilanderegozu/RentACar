@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using Rentaly.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Rentaly.DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=locahost;Database=Rentaly;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=Rentaly;Trusted_Connection=True;TrustServerCertificate=True;");
         }
 
         public DbSet<Branch> Branches { get; set; }
@@ -22,3 +23,5 @@ namespace Rentaly.DataAccessLayer.Concrete
         public DbSet<Rental> Rentals { get; set; }
     }
 }
+
+

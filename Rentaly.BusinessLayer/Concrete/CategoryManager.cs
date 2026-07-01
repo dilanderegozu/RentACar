@@ -16,29 +16,30 @@ namespace Rentaly.BusinessLayer.Concrete
             _categoryDal = categoryDal;
         }
 
-        public Task TDeleteAsync(int id)
+        public async Task TDeleteAsync(int id)
         {
-            throw new NotImplementedException();
+          await _categoryDal.DeleteAsync(id);
         }
 
-        public Task<Category> TGetByIdAsync(int id)
+        public async Task<Category> TGetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _categoryDal.GetByIdAsync(id);
+        }
+        
+
+        public async Task<List<Category>> TGetListAsync()
+        {
+            return await _categoryDal.GetListAsync();
         }
 
-        public Task<List<Category>> TGetListAsync()
+        public async Task TInsertAsync(Category entity)
         {
-            throw new NotImplementedException();
+            await _categoryDal.InsertAsync(entity);
         }
 
-        public Task TInsertAsync(Category entity)
+        public async Task TUpdateAsync(Category entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task TUpdateAsync(Category entity)
-        {
-            throw new NotImplementedException();
+            await _categoryDal.UpdateAsync(entity);
         }
     }
 }
