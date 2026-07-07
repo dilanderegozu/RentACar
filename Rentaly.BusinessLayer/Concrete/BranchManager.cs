@@ -23,9 +23,9 @@ namespace Rentaly.BusinessLayer.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<List<Branch>> TGetListAsync()
+        public async Task<List<Branch>> TGetListAsync()
         {
-            throw new NotImplementedException();
+         return await _branchDal.GetListAsync();
         }
 
         public Task TInsertAsync(Branch entity)

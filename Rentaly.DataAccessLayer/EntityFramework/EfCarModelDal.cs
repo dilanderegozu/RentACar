@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Rentaly.DataAccessLayer.EntityFramework
 {
-    internal class EfCarModelDal : GenericRepository<CarModel>, ICarModel
+    public class EfCarModelDal : GenericRepository<CarModel>, ICarModel
     {
         public EfCarModelDal(RentalyContext context) : base(context)
         {

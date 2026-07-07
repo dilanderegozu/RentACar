@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Rentaly.DataAccessLayer.EntityFramework
 {
-    internal class EfCustomerDal : GenericRepository<Customer>, ICustomerDal
+    public class EfCustomerDal : GenericRepository<Customer>, ICustomerDal
     {
         public EfCustomerDal(RentalyContext context) : base(context)
         {

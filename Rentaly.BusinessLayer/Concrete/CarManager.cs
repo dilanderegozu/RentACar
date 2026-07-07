@@ -13,29 +13,35 @@ namespace Rentaly.BusinessLayer.Concrete
             _carDal = carDal;
         }
 
-        public Task TDeleteAsync(int id)
+        public async Task TDeleteAsync(int id)
         {
-            throw new NotImplementedException();
+        await _carDal.DeleteAsync(id);
         }
 
-        public Task<Car> TGetByIdAsync(int id)
+        public async Task<List<Car>> TGetAllCarsWithCategoryAsync()
         {
-            throw new NotImplementedException();
+            return await _carDal.GetAllCarsWithCategoryAsync();
         }
 
-        public Task<List<Car>> TGetListAsync()
+        public async Task<Car> TGetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _carDal.GetByIdAsync(id);
+        }
+        
+
+        public async Task<List<Car>> TGetListAsync()
+        {
+            return await _carDal.GetListAsync();
         }
 
-        public Task TInsertAsync(Car entity)
+        public async Task TInsertAsync(Car entity)
         {
-            throw new NotImplementedException();
+            await _carDal.InsertAsync(entity);
         }
 
-        public Task TUpdateAsync(Car entity)
+        public async  Task TUpdateAsync(Car entity)
         {
-            throw new NotImplementedException();
+            await _carDal.UpdateAsync(entity);
         }
     }
 }
