@@ -1,0 +1,364 @@
+﻿@model Rentaly.WebUI.Models.BookingViewModel
+@{
+    Layout = "~/Views/Shared/_RentalyLayout.cshtml";
+}
+
+<style>
+    #quick-booking {
+        padding-bottom: 60px;
+    }
+
+        #quick-booking .booking-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 24px 60px rgba(16,24,40,0.16);
+            margin-top: -80px;
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+        }
+
+            #quick-booking .booking-card h4 {
+                font-weight: 700;
+                font-size: 19px;
+                margin-bottom: 22px;
+                color: #12203f;
+                letter-spacing: -0.2px;
+            }
+
+        #quick-booking label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #6b7080;
+            margin-bottom: 7px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        #quick-booking .form-control,
+        #quick-booking select,
+        #quick-booking textarea {
+            border: 1px solid #e6e8ee;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 14.5px;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: border-color .15s ease, box-shadow .15s ease;
+            background: #fbfbfd;
+        }
+
+            #quick-booking .form-control:focus,
+            #quick-booking select:focus,
+            #quick-booking textarea:focus {
+                border-color: #16305c;
+                box-shadow: 0 0 0 3px rgba(22,48,92,0.1);
+                outline: none;
+                background: #fff;
+            }
+
+        #quick-booking .form-row {
+            display: flex;
+            gap: 18px;
+        }
+
+            #quick-booking .form-row > div {
+                flex: 1;
+            }
+
+        #quick-booking .datetime-group {
+            display: flex;
+            gap: 8px;
+        }
+
+            #quick-booking .datetime-group input[type="date"] {
+                flex: 2;
+            }
+
+            #quick-booking .datetime-group select {
+                flex: 1;
+            }
+
+        #quick-booking .btn-submit {
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 0;
+            width: 100%;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            transition: background .15s ease, transform .15s ease;
+            box-shadow: 0 8px 20px rgba(22,163,74,0.25);
+        }
+
+            #quick-booking .btn-submit:hover {
+                background: #128a3e;
+                transform: translateY(-1px);
+            }
+
+        #quick-booking .col-lg-6:first-child {
+            border-right: 1px solid #f0f1f4;
+            padding-right: 36px;
+        }
+
+        #quick-booking .col-lg-6:last-child {
+            padding-left: 36px;
+        }
+
+    /* car select */
+    .car-select {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .car-select-trigger {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border: 1px solid #e6e8ee;
+        border-radius: 10px;
+        padding: 11px 14px;
+        cursor: pointer;
+        background: #fbfbfd;
+        transition: border-color .15s ease;
+    }
+
+        .car-select-trigger:hover {
+            border-color: #16305c;
+        }
+
+        .car-select-trigger img {
+            width: 50px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+
+        .car-select-trigger .car-select-name {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 15px;
+        }
+
+        .car-select-trigger .car-select-price {
+            color: #16305c;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        .car-select-trigger .chevron {
+            margin-left: auto;
+            color: #8a8f98;
+            transition: transform .15s ease;
+            font-size: 12px;
+        }
+
+    .car-select.open .chevron {
+        transform: rotate(180deg);
+    }
+
+    .car-select-options {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #e6e8ee;
+        border-radius: 10px;
+        box-shadow: 0 10px 28px rgba(16,24,40,0.14);
+        max-height: 280px;
+        overflow-y: auto;
+        z-index: 20;
+    }
+
+    .car-select.open .car-select-options {
+        display: block;
+    }
+
+    .car-select-option {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        cursor: pointer;
+    }
+
+        .car-select-option:hover {
+            background: #f6f7fa;
+        }
+
+        .car-select-option img {
+            width: 48px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .car-select-option .car-select-name {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 14.5px;
+        }
+
+        .car-select-option .car-select-price {
+            color: #16305c;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+    @@media (max-width: 991px) {
+        #quick-booking .col-lg-6:first-child {
+            border-right: none;
+            padding-right: 0;
+            margin-bottom: 30px;
+        }
+
+        #quick-booking .col-lg-6:last-child {
+            padding-left: 0;
+        }
+    }
+</style>
+
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- subheader: siteninkiyle aynı yapı -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="/RentalyHTML/images/background/2.jpg" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Quick Booking</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="quick-booking">
+        <div class="container">
+            <div class="booking-card">
+                <form asp-action="Create" asp-controller="Booking" method="post">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Booking a Car</h4>
+
+                            <input type="hidden" name="CarId" id="carIdInput" value="@Model.CarId">
+
+                            <div class="car-select" id="carSelect">
+                                <div class="car-select-trigger" id="carSelectTrigger">
+                                    <img id="carSelectImg" src="@Model.SelectedCar?.ImageUrl" alt="">
+                                    <span class="car-select-name" id="carSelectName">@Model.SelectedCar?.Brand?.BrandName @Model.SelectedCar?.CarModel?.ModelName</span>
+                                    <span class="car-select-price" id="carSelectPrice">- @Model.SelectedCar?.DailyPrice.ToString("C0")</span>
+                                    <span class="chevron">▾</span>
+                                </div>
+                                <div class="car-select-options">
+                                    @foreach (var car in Model.AvailableCars)
+                                    {
+                                        <div class="car-select-option"
+                                             data-id="@car.CarId"
+                                             data-name="@car.Brand?.BrandName @car.CarModel?.ModelName"
+                                             data-price="@car.DailyPrice.ToString("C0")"
+                                             data-img="@car.ImageUrl">
+                                            <img src="@car.ImageUrl" alt="">
+                                            <span class="car-select-name">@car.Brand?.BrandName @car.CarModel?.ModelName</span>
+                                            <span class="car-select-price">@car.DailyPrice.ToString("C0")</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div>
+                                    <label>Pick Up Location</label>
+                                    <select name="PickUpBranchId">
+                                        @foreach (var branch in Model.Branches)
+                                        {
+                                            <option value="@branch.BranchId">@branch.BranchName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Destination</label>
+                                    <select name="DropOffBranchId">
+                                        @foreach (var branch in Model.Branches)
+                                        {
+                                            <option value="@branch.BranchId">@branch.BranchName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div>
+                                    <label>Pick Up Date &amp; Time</label>
+                                    <div class="datetime-group">
+                                        <input type="date" name="PickUpDate" value="@Model.PickUpDate.ToString("yyyy-MM-dd")">
+                                        <select name="PickUpTime">
+                                            @for (int h = 0; h < 24; h++)
+                                            {
+                                                var t = $"{h:00}:00";
+                                                <option value="@t">@t</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>Return Date &amp; Time</label>
+                                    <div class="datetime-group">
+                                        <input type="date" name="DropOffDate" value="@Model.DropOffDate.ToString("yyyy-MM-dd")">
+                                        <select name="DropOffTime">
+                                            @for (int h = 0; h < 24; h++)
+                                            {
+                                                var t = $"{h:00}:00";
+                                                <option value="@t">@t</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-submit">Submit</button>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h4>Enter Your Details</h4>
+                            <input type="text" name="CustomerName" class="form-control" placeholder="Your Name" required>
+                            <input type="email" name="CustomerEmail" class="form-control" placeholder="Your Email" required>
+                            <input type="tel" name="CustomerPhone" class="form-control" placeholder="Your Phone" required>
+                            <textarea name="Notes" class="form-control" rows="4" placeholder="Do you have any request?"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const carSelect = document.getElementById('carSelect');
+    const trigger = document.getElementById('carSelectTrigger');
+
+    trigger.addEventListener('click', () => carSelect.classList.toggle('open'));
+
+    document.querySelectorAll('.car-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.getElementById('carIdInput').value = opt.dataset.id;
+            document.getElementById('carSelectImg').src = opt.dataset.img;
+            document.getElementById('carSelectName').textContent = opt.dataset.name;
+            document.getElementById('carSelectPrice').textContent = '- ' + opt.dataset.price;
+            carSelect.classList.remove('open');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!carSelect.contains(e.target)) carSelect.classList.remove('open');
+    });
+</script>

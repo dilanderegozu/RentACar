@@ -42,6 +42,8 @@ public class EfCarDal : GenericRepository<Car>, ICarDal
             .Include(c => c.CarModel)
             .Include(c => c.Category)
             .Include(c => c.VehicleType)
+             .Include(c => c.Branch)
+              .Include(c => c.Images)
             .FirstOrDefaultAsync(c => c.CarId == id);
     }
 }

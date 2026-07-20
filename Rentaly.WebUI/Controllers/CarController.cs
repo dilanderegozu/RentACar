@@ -96,7 +96,11 @@ namespace Rentaly.WebUI.Controllers
             var model = new CarDetailsViewModel
             {
                 Car = car,
-                Branches = await _branchService.TGetListAsync()
+                Branches = await _branchService.TGetListAsync(),
+                GalleryImages = car.Images?
+                    .OrderBy(i => i.DisplayOrder)
+                    .Select(i => i.ImageUrl)
+                    .ToList() ?? new List<string>()
             };
 
             return View(model);

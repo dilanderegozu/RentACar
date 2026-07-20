@@ -28,8 +28,26 @@ namespace Rentaly.DataAccessLayer.Concrete
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
-       
+        public DbSet<CarImage> CarImages { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.PickUpBranch)
+                .WithMany()
+                .HasForeignKey(b => b.PickUpBranchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.DropOffBranch)
+                .WithMany()
+                .HasForeignKey(b => b.DropOffBranchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
+
 }
 
 

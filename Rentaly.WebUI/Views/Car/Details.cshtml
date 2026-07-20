@@ -2,6 +2,201 @@
 @{
     Layout = "~/Views/Shared/_RentalyLayout.cshtml";
 }
+
+<style>
+    #section-car-details .gallery-main {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #eef0f3;
+    }
+
+        #section-car-details .gallery-main img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            display: block;
+        }
+
+    #section-car-details .gallery-thumbs {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+    }
+
+        #section-car-details .gallery-thumbs img {
+            width: 90px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.7;
+            transition: border-color .15s ease, opacity .15s ease;
+        }
+
+            #section-car-details .gallery-thumbs img:hover {
+                opacity: 1;
+            }
+
+            #section-car-details .gallery-thumbs img.active {
+                border-color: #16305c;
+                opacity: 1;
+            }
+
+    #section-car-details .about-car {
+        border: 1px solid #eef0f3;
+        border-radius: 14px;
+        padding: 22px 24px;
+        margin-top: 18px;
+        box-shadow: 0 4px 20px rgba(16, 24, 40, 0.04);
+    }
+
+        #section-car-details .about-car h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        #section-car-details .about-car p {
+            color: #55596b;
+            font-size: 14.5px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+    #section-car-details .de-spec {
+        border: 1px solid #eef0f3;
+        border-radius: 12px;
+        padding: 4px 20px;
+        background: #fff;
+    }
+
+    #section-car-details .d-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid #f0f1f4;
+    }
+
+        #section-car-details .d-row:last-child {
+            border-bottom: none;
+        }
+
+    #section-car-details .d-title {
+        color: #8a8f98;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    #section-car-details .d-value {
+        color: #1a1a2e;
+        font-size: 14.5px;
+        font-weight: 600;
+    }
+
+    #section-car-details .de-price {
+        background: linear-gradient(135deg, #0b1e3d 0%, #16305c 100%);
+        color: #fff;
+        border-radius: 14px;
+        padding: 28px 20px;
+    }
+
+    #section-car-details .de-price {
+        font-size: 14px;
+        opacity: 0.75;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+
+        #section-car-details .de-price h3 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 34px;
+            margin-top: 6px;
+            margin-bottom: 0;
+        }
+
+    #section-car-details .de-box {
+        border: 1px solid #eef0f3;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(16, 24, 40, 0.04);
+    }
+
+        #section-car-details .de-box h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        #section-car-details .de-box h5 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #55596b;
+            margin-bottom: 6px;
+        }
+
+    #section-car-details .form-control.custom-input,
+    #section-car-details input[type="date"] {
+        border: 1px solid #e2e4ea;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 14px;
+        transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+        #section-car-details .form-control.custom-input:focus,
+        #section-car-details input[type="date"]:focus {
+            border-color: #16305c;
+            box-shadow: 0 0 0 3px rgba(22, 48, 92, 0.1);
+            outline: none;
+        }
+
+    #section-car-details #send_message {
+        background: #16305c;
+        border: none;
+        border-radius: 10px;
+        padding: 13px 0;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: background .15s ease, transform .15s ease;
+    }
+
+        #section-car-details #send_message:hover {
+            background: #0b1e3d;
+            transform: translateY(-1px);
+        }
+
+    #section-car-details .de-color-icons {
+        display: flex;
+        gap: 10px;
+    }
+
+        #section-car-details .de-color-icons span {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f4f5f8;
+            color: #16305c;
+            transition: background .15s ease, color .15s ease;
+            cursor: pointer;
+        }
+
+            #section-car-details .de-color-icons span:hover {
+                background: #16305c;
+                color: #fff;
+            }
+
+        #section-car-details .de-color-icons i {
+            font-size: 16px;
+        }
+</style>
+
 <div class="no-bottom no-top zebra" id="content">
     <div id="top"></div>
 
@@ -25,17 +220,31 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6">
-                    <div class="d-img">
-                        <img src="@Model.Car.ImageUrl" class="img-fluid rounded" alt="@Model.Car.Brand?.BrandName @Model.Car.CarModel?.ModelName">
+                    <div class="gallery-main">
+                        <img id="mainCarImage"
+                             src="@(Model.GalleryImages.FirstOrDefault() ?? Model.Car.ImageUrl)"
+                             alt="@Model.Car.Brand?.BrandName @Model.Car.CarModel?.ModelName">
+                    </div>
+
+                    @if (Model.GalleryImages.Any())
+                    {
+                        <div class="gallery-thumbs">
+                            @for (int i = 0; i < Model.GalleryImages.Count; i++)
+                            {
+                                <img src="@Model.GalleryImages[i]"
+                                     class="@(i == 0 ? "active" : "")"
+                                     onclick="setMainImage(this)">
+                            }
+                        </div>
+                    }
+
+                    <div class="about-car">
+                        <h4>Araç Hakkında</h4>
+                        <p>@Model.Car.Description</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3">
-                    <h3>@Model.Car.Brand?.BrandName @Model.Car.CarModel?.ModelName</h3>
-                    <p>@Model.Car.Description</p>
-
-                    <div class="spacer-10"></div>
-
                     <h4>Teknik Özellikler</h4>
                     <div class="de-spec">
                         <div class="d-row">
@@ -96,8 +305,6 @@
                         <form name="contactForm" id="contact_form" method="post" action="/Booking/Create">
                             <h4>Bu Aracı Rezerve Et</h4>
 
-                            <div class="spacer-20"></div>
-
                             <input type="hidden" name="CarId" value="@Model.Car.CarId">
 
                             <div class="row">
@@ -125,18 +332,16 @@
                             </div>
 
                             <input type="submit" id="send_message" value="Rezervasyon Yap" class="btn-main btn-fullwidth">
-
-                            <div class="clearfix"></div>
                         </form>
                     </div>
 
                     <div class="de-box">
                         <h4>Paylaş</h4>
                         <div class="de-color-icons">
-                            <span><i class="fa fa-instagram fa-lg"></i></span>
-                            <span><i class="fa fa-linkedin fa-lg"></i></span>
-                            <span><i class="fa fa-whatsapp fa-lg"></i></span>
-                            <span><i class="fa fa-envelope fa-lg"></i></span>
+                            <span><i class="fab fa-instagram"></i></span>
+                            <span><i class="fab fa-linkedin-in"></i></span>
+                            <span><i class="fab fa-whatsapp"></i></span>
+                            <span><i class="fa fa-envelope"></i></span>
                         </div>
                     </div>
                 </div>
@@ -144,3 +349,11 @@
         </div>
     </section>
 </div>
+
+<script>
+    function setMainImage(el) {
+        document.getElementById('mainCarImage').src = el.src;
+        document.querySelectorAll('.gallery-thumbs img').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+    }
+</script>

@@ -25,8 +25,8 @@ namespace Rentaly.EntityLayer.Entities
         public decimal DepositAmount { get; set; }
         public bool IsAvailable { get; set; }
         public bool IsActive { get; set; }
-
         public string ImageUrl { get; set; }
+        public ICollection<CarImage> Images { get; set; } = new List<CarImage>();
         public int SeatCount { get; set; }
         public int LuggageCount { get; set; }
         public string FuelType { get; set; }

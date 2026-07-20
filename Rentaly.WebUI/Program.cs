@@ -28,8 +28,7 @@ builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();
 builder.Services.AddScoped<IFAQDal, EfFAQDal>();
 builder.Services.AddScoped<IContactDal, EfContactDal>();
 builder.Services.AddScoped<IVehicleTypeDal, EfVehicleTypeDal>();
-
-// --- Business Layer Servisleri ---
+builder.Services.AddScoped<IBookingDal, EfBookingDal>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<ICarService, CarManager>();
 builder.Services.AddScoped<IBranchService, BranchManager>();
@@ -44,6 +43,7 @@ builder.Services.AddScoped<ITestimonialService, TestimonialManager>();
 builder.Services.AddScoped<IFAQService, FAQManager>();
 builder.Services.AddScoped<IContactService, ContactManager>();
 builder.Services.AddScoped<IVehicleTypeService, VehicleTypeManager>();
+builder.Services.AddScoped<IBookingService, BookingManager>();
 builder.Services.AddDbContext<RentalyContext>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
