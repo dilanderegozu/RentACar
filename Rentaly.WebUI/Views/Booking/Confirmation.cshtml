@@ -1,0 +1,260 @@
+﻿@model Rentaly.EntityLayer.Entities.Booking
+@{
+    Layout = "~/Views/Shared/_RentalyLayout.cshtml";
+    var nights = (Model.DropOffDate.Date - Model.PickUpDate.Date).Days;
+}
+
+<style>
+    #booking-confirmation {
+        padding-bottom: 60px;
+    }
+
+    #booking-confirmation .confirmation-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 24px 60px rgba(16,24,40,0.16);
+        margin-top: -80px;
+        position: relative;
+        z-index: 2;
+        padding: 48px;
+        text-align: center;
+    }
+
+    #booking-confirmation .check-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: #ecfdf3;
+        color: #16a34a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin: 0 auto 20px;
+    }
+
+    #booking-confirmation h2 {
+        font-weight: 700;
+        color: #12203f;
+        margin-bottom: 8px;
+    }
+
+    #booking-confirmation .confirmation-sub {
+        color: #6b7080;
+        font-size: 15px;
+        margin-bottom: 34px;
+    }
+
+    #booking-confirmation .confirmation-code {
+        display: inline-block;
+        background: #f4f5f8;
+        color: #16305c;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        padding: 8px 18px;
+        border-radius: 999px;
+        margin-bottom: 34px;
+    }
+
+    #booking-confirmation .summary-box {
+        text-align: left;
+        border: 1px solid #eef0f3;
+        border-radius: 14px;
+        padding: 28px 30px;
+        margin-bottom: 30px;
+    }
+
+    #booking-confirmation .summary-car {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #f0f1f4;
+    }
+
+    #booking-confirmation .summary-car img {
+        width: 90px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    #booking-confirmation .summary-car .car-name {
+        font-weight: 700;
+        font-size: 17px;
+        color: #1a1a2e;
+    }
+
+    #booking-confirmation .summary-car .car-price {
+        color: #16305c;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 2px;
+    }
+
+    #booking-confirmation .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        font-size: 14.5px;
+    }
+
+    #booking-confirmation .summary-row .label {
+        color: #8a8f98;
+    }
+
+    #booking-confirmation .summary-row .value {
+        color: #1a1a2e;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    #booking-confirmation .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #f0f1f4;
+    }
+
+    #booking-confirmation .summary-total .label {
+        font-weight: 700;
+        color: #1a1a2e;
+        font-size: 15px;
+    }
+
+    #booking-confirmation .summary-total .value {
+        font-weight: 700;
+        color: #16305c;
+        font-size: 22px;
+    }
+
+    #booking-confirmation .btn-row {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+    }
+
+    #booking-confirmation .btn-outline {
+        border: 1px solid #e2e4ea;
+        color: #16305c;
+        background: #fff;
+        border-radius: 10px;
+        padding: 13px 26px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: border-color .15s ease;
+    }
+
+    #booking-confirmation .btn-outline:hover {
+        border-color: #16305c;
+    }
+
+    #booking-confirmation .btn-solid {
+        background: #16305c;
+        color: #fff;
+        border-radius: 10px;
+        padding: 13px 26px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .15s ease;
+    }
+
+    #booking-confirmation .btn-solid:hover {
+        background: #0b1e3d;
+        color: #fff;
+    }
+</style>
+
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <section id="subheader" class="jarallax text-light">
+        <img src="/RentalyHTML/images/background/2.jpg" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Rezervasyon Onayı</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="booking-confirmation">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="confirmation-card">
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <h2>Rezervasyonunuz Oluşturuldu!</h2>
+                        <p class="confirmation-sub">
+                            @Model.CustomerName, rezervasyon detayların aşağıda. Onay e-postası @Model.CustomerEmail adresine gönderildi.
+                        </p>
+
+                        <div class="confirmation-code">
+                            REZERVASYON NO #@Model.BookingId.ToString("D6")
+                        </div>
+
+                        <div class="summary-box">
+                            <div class="summary-car">
+                                <img src="@Model.Car?.ImageUrl" alt="">
+                                <div>
+                                    <div class="car-name">@Model.Car?.Brand?.BrandName @Model.Car?.CarModel?.ModelName</div>
+                                    <div class="car-price">@Model.Car?.DailyPrice.ToString("C0") / gün</div>
+                                </div>
+                            </div>
+
+                            <div class="summary-row">
+                                <span class="label">Alış Şubesi</span>
+                                <span class="value">@Model.PickUpBranch?.BranchName</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Teslim Şubesi</span>
+                                <span class="value">@Model.DropOffBranch?.BranchName</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Alış Tarihi</span>
+                                <span class="value">@Model.PickUpDate.ToString("dd MMMM yyyy, HH:mm")</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Teslim Tarihi</span>
+                                <span class="value">@Model.DropOffDate.ToString("dd MMMM yyyy, HH:mm")</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Süre</span>
+                                <span class="value">@nights gün</span>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                            {
+                                <div class="summary-row">
+                                    <span class="label">Not</span>
+                                    <span class="value">@Model.Notes</span>
+                                </div>
+                            }
+
+                            <div class="summary-total">
+                                <span class="label">Toplam Ücret</span>
+                                <span class="value">@Model.TotalPrice.ToString("C0")</span>
+                            </div>
+                        </div>
+
+                        <div class="btn-row">
+                            <a href="/" class="btn-outline">Anasayfaya Dön</a>
+                            <a href="/Car/CarList" class="btn-solid">Araçlara Göz At</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

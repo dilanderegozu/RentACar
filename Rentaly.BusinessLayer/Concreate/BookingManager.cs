@@ -39,5 +39,9 @@ namespace Rentaly.BusinessLayer.Concreate
         {
             await _bookingDal.UpdateAsync(entity);
         }
+        public async Task<Booking> GetBookingWithDetailsByIdAsync(int id)
+        {
+            return await _bookingDal.GetBookingWithDetailsByIdAsync(id);
+        }
     }
 }

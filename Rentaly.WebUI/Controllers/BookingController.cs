@@ -80,5 +80,14 @@ namespace Rentaly.WebUI.Controllers
 
             return RedirectToAction("Confirmation", new { id = booking.BookingId });
         }
+        [HttpGet]
+        public async Task<IActionResult> Confirmation(int id)
+        {
+            var booking = await _bookingService.GetBookingWithDetailsByIdAsync(id);
+            if (booking == null)
+                return NotFound();
+
+            return View(booking);
+        }
     }
 }

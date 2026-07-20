@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Rentaly.BusinessLayer.Abstract
 {
-    public interface IBookingService:IGenericService<Booking>
+    public interface IActivityService:IGenericService<Activity>
     {
-        Task<Booking> GetBookingWithDetailsByIdAsync(int id);
+        Task<List<Activity>> GetRecentAsync(int count);
     }
 }

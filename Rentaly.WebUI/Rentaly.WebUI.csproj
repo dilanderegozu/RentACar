@@ -31,11 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\RentalyHTML\fonts\et-line-font\.DS_Store" />
     <None Include="wwwroot\RentalyHTML\fonts\et-line-font\fonts\.DS_Store" />
     <None Include="wwwroot\RentalyHTML\vendor\phpmailer\phpmailer\.github\ISSUE_TEMPLATE.md" />

@@ -1,0 +1,41 @@
+﻿@model List<Rentaly.EntityLayer.Entities.Activity>
+@using Rentaly.WebUI.Helpers
+
+<div class="col-span-12 lg:col-span-4">
+    <div class="bg-white p-lg rounded-xl border border-outline-variant custom-shadow flex flex-col h-full">
+        <div class="flex justify-between items-center mb-lg">
+            <h3 class="font-h3 text-h3 text-on-surface">Son Aktiviteler</h3>
+            <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">history</span>
+        </div>
+
+        <div class="space-y-6 flex-1">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var activity = Model[i];
+                var (icon, bgClass, iconColorClass) = ActivityDisplayHelper.GetDisplay(activity.Type);
+                var isLast = i == Model.Count - 1;
+
+                <div class="flex gap-4 @(isLast ? "" : "relative")">
+                    @if (!isLast)
+                    {
+                        <div class="absolute left-4 top-8 bottom-0 w-[1px] bg-outline-variant -mb-6"></div>
+                    }
+
+                    <div class="w-8 h-8 rounded-full @bgClass flex items-center justify-center shrink-0 z-10 border border-white">
+                        <span class="material-symbols-outlined text-[18px] @iconColorClass">@icon</span>
+                    </div>
+
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface font-semibold">@activity.Title</p>
+                        <p class="text-[12px] text-on-surface-variant">@activity.SubTitle</p>
+                        <p class="text-[11px] text-on-surface-variant/50 mt-1 uppercase font-bold">@activity.CreatedDate.ToTurkishTimeAgo()</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button class="w-full mt-xl py-3 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-all">
+            Tümünü Görüntüle
+        </button>
+    </div>
+</div>

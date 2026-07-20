@@ -34,6 +34,6 @@ namespace Rentaly.EntityLayer.Entities
         public int VehicleTypeId { get; set; }
         public int EngineCapacity { get; set; }
         public VehicleType VehicleType { get; set; }
-
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }

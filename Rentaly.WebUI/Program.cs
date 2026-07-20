@@ -45,7 +45,8 @@ builder.Services.AddScoped<IContactService, ContactManager>();
 builder.Services.AddScoped<IVehicleTypeService, VehicleTypeManager>();
 builder.Services.AddScoped<IBookingService, BookingManager>();
 builder.Services.AddDbContext<RentalyContext>();
-
+builder.Services.AddScoped<IActivityDal, EfActivityDal>();
+builder.Services.AddScoped<IActivityService, ActivityManager>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllersWithViews();
 

@@ -1,0 +1,168 @@
+﻿@model Rentaly.WebUI.Areas.Admin.Models.DashboardViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<main class="ml-[280px] mt-[72px] p-xl h-[calc(100vh-72px)] overflow-y-auto no-scrollbar">
+    <!-- Header Section -->
+    <div class="mb-xl">
+        <h1 class="font-h1 text-h1 text-on-surface">Dashboard</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Rentaly yönetim paneline hoş geldiniz.</p>
+    </div>
+    <!-- Summary Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter mb-xl">
+        <!-- Card 1 -->
+        <div class="bg-white p-lg rounded-xl border border-outline-variant custom-shadow flex flex-col gap-sm">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-surface-container-low rounded-lg">
+                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">directions_car</span>
+                </div>
+
+            </div>
+            <div>
+                <p class="font-display text-display text-on-surface leading-none">@Model.TotalCarCount</p>
+                <p class="font-label-md text-label-md text-on-surface-variant mt-1">Toplam Araç</p>
+                <p class="text-[12px] text-on-surface-variant/60 mt-2">Toplam kayıtlı araç sayısı</p>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-white p-lg rounded-xl border border-outline-variant custom-shadow flex flex-col gap-sm">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-secondary-fixed/30 rounded-lg">
+                    <span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">key</span>
+                </div>
+
+            </div>
+            <div>
+                <p class="font-display text-display text-on-surface leading-none">@Model.TotalBookingCount</p>
+                <p class="font-label-md text-label-md text-on-surface-variant mt-1">Aktif Kiralama</p>
+                <p class="text-[12px] text-on-surface-variant/60 mt-2">Toplam Kiralanmış Araç Sayısı</p>
+            </div>
+        </div>
+    
+        <!-- Card 4 -->
+        <div class="bg-white p-lg rounded-xl border border-outline-variant custom-shadow flex flex-col gap-sm">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-surface-container-low rounded-lg">
+                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">store</span>
+                </div>
+
+            </div>
+            <div>
+                <p class="font-display text-display text-on-surface leading-none">@Model.TotalBranchCount</p>
+                <p class="font-label-md text-label-md text-on-surface-variant mt-1">Şube Sayısı</p>
+                <p class="text-[12px] text-on-surface-variant/60 mt-2">Aktif hizmet veren şubeler</p>
+            </div>
+        </div>
+    </div>
+    <!-- Main Grid Area -->
+    <div class="grid grid-cols-12 gap-gutter">
+        <!-- Left Column: Fleet Growth Chart -->
+        <div class="col-span-12 lg:col-span-8">
+            <div class="bg-white p-lg rounded-xl border border-outline-variant custom-shadow h-full">
+                <div class="flex justify-between items-center mb-xl">
+                    <div>
+                        <h3 class="font-h3 text-h3 text-on-surface">Fleet Growth</h3>
+                        <p class="font-label-md text-label-md text-on-surface-variant">Aylık araç büyüme grafiği</p>
+                    </div>
+                    <select id="fleetRangeSelect" class="bg-surface-container-low border-none rounded-lg text-label-sm font-label-sm focus:ring-2 focus:ring-primary outline-none py-1.5 px-3">
+                        <option value="6">Son 6 Ay</option>
+                        <option value="12">Son 1 Yıl</option>
+                    </select>
+                </div>
+
+                <div class="relative h-[300px] w-full mt-lg">
+                    <div class="absolute inset-0 flex flex-col justify-between opacity-10">
+                        <div class="border-t border-on-surface w-full"></div>
+                        <div class="border-t border-on-surface w-full"></div>
+                        <div class="border-t border-on-surface w-full"></div>
+                        <div class="border-t border-on-surface w-full"></div>
+                        <div class="border-t border-on-surface w-full"></div>
+                    </div>
+
+                    <svg id="fleetGrowthSvg" class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                                <stop offset="0%" stop-color="#22C55E" stop-opacity="0.2"></stop>
+                                <stop offset="100%" stop-color="#22C55E" stop-opacity="0"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path id="fleetAreaPath" fill="url(#gradient)"></path>
+                        <path id="fleetLinePath" fill="none" stroke="#22C55E" stroke-linecap="round" stroke-width="2.5"></path>
+                        <g id="fleetPoints"></g>
+                    </svg>
+
+                    <div id="fleetLabels" class="absolute -bottom-6 w-full flex justify-between px-2 text-[11px] font-medium text-on-surface-variant/60 uppercase tracking-tighter">
+                        @foreach (var label in Model.FleetGrowthLabels)
+                        {
+                            <span>@label</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Column: Recent Activities -->
+        @await Component.InvokeAsync("RecentActivitiesComponentPartial")
+    </div>
+    <!-- Featured Section (Bento style teaser) -->
+   
+</main>
+<script>
+    const fleetData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.FleetGrowthData));
+
+    function renderFleetChart(data) {
+        const max = Math.max(...data, 1);
+        const min = Math.min(...data, 0);
+        const range = (max - min) || 1;
+
+    
+        const points = data.map((val, i) => {
+            const x = (i / (data.length - 1)) * 100;
+            const y = 90 - ((val - min) / range) * 70;
+            return { x, y };
+        });
+
+
+        let linePath = `M${points[0].x},${points[0].y}`;
+        for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const midX = (prev.x + curr.x) / 2;
+            linePath += ` Q${midX},${prev.y} ${curr.x},${curr.y}`;
+        }
+
+        const areaPath = `${linePath} L100,100 L0,100 Z`;
+
+        document.getElementById('fleetLinePath').setAttribute('d', linePath);
+        document.getElementById('fleetAreaPath').setAttribute('d', areaPath);
+
+        const pointsGroup = document.getElementById('fleetPoints');
+        pointsGroup.innerHTML = '';
+        points.forEach(p => {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', p.x);
+            circle.setAttribute('cy', p.y);
+            circle.setAttribute('r', '1.5');
+            circle.setAttribute('fill', '#22C55E');
+            pointsGroup.appendChild(circle);
+        });
+    }
+
+    renderFleetChart(fleetData);
+
+    document.getElementById('fleetRangeSelect').addEventListener('change', function () {
+        // "Son 1 Yıl" seçilince backend'e yeni fetch atılacak yer (aşağıdaki 3. adım)
+        const months = parseInt(this.value);
+        fetch(`/Admin/Dashboard/FleetGrowth?months=${months}`)
+            .then(res => res.json())
+            .then(res => {
+                renderFleetChart(res.data);
+                const labelsContainer = document.getElementById('fleetLabels');
+                labelsContainer.innerHTML = '';
+                res.labels.forEach(l => {
+                    const span = document.createElement('span');
+                    span.textContent = l;
+                    labelsContainer.appendChild(span);
+                });
+            });
+    });
+</script>

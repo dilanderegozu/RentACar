@@ -30,6 +30,7 @@ namespace Rentaly.DataAccessLayer.Concrete
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Activity> Activities { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Booking>()

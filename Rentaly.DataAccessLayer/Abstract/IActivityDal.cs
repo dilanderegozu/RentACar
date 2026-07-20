@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Rentaly.DataAccessLayer.Abstract
 {
-    public interface IBookingDal:IGenericDal<Booking>
+    public interface IActivityDal : IGenericDal<Activity>
     {
-        Task<Booking> GetBookingWithDetailsByIdAsync(int id);
+        Task<List<Activity>> GetRecentAsync(int count);
     }
 }

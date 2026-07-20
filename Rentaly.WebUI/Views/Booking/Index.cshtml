@@ -234,7 +234,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Quick Booking</h1>
+                        <h1>Hızlı Rezervasyon</h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -248,7 +248,7 @@
                 <form asp-action="Create" asp-controller="Booking" method="post">
                     <div class="row">
                         <div class="col-lg-6">
-                            <h4>Booking a Car</h4>
+                            <h4>Araç Rezervasyonu</h4>
 
                             <input type="hidden" name="CarId" id="carIdInput" value="@Model.CarId">
 
@@ -277,7 +277,7 @@
 
                             <div class="form-row">
                                 <div>
-                                    <label>Pick Up Location</label>
+                                    <label>Teslim Alma Noktası</label>
                                     <select name="PickUpBranchId">
                                         @foreach (var branch in Model.Branches)
                                         {
@@ -286,7 +286,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label>Destination</label>
+                                    <label>Varış noktası</label>
                                     <select name="DropOffBranchId">
                                         @foreach (var branch in Model.Branches)
                                         {
@@ -298,7 +298,7 @@
 
                             <div class="form-row">
                                 <div>
-                                    <label>Pick Up Date &amp; Time</label>
+                                    <label>Teslim Alma Tarih & Saat</label>
                                     <div class="datetime-group">
                                         <input type="date" name="PickUpDate" value="@Model.PickUpDate.ToString("yyyy-MM-dd")">
                                         <select name="PickUpTime">
@@ -311,7 +311,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label>Return Date &amp; Time</label>
+                                    <label>Dönüş Tarih & Saat</label>
                                     <div class="datetime-group">
                                         <input type="date" name="DropOffDate" value="@Model.DropOffDate.ToString("yyyy-MM-dd")">
                                         <select name="DropOffTime">
@@ -325,15 +325,15 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn-submit">Submit</button>
+                            <button type="submit" class="btn-submit">Rezerve Et</button>
                         </div>
 
                         <div class="col-lg-6">
                             <h4>Enter Your Details</h4>
-                            <input type="text" name="CustomerName" class="form-control" placeholder="Your Name" required>
-                            <input type="email" name="CustomerEmail" class="form-control" placeholder="Your Email" required>
-                            <input type="tel" name="CustomerPhone" class="form-control" placeholder="Your Phone" required>
-                            <textarea name="Notes" class="form-control" rows="4" placeholder="Do you have any request?"></textarea>
+                            <input type="text" name="CustomerName" class="form-control" placeholder="İsim" required>
+                            <input type="email" name="CustomerEmail" class="form-control" placeholder="Email" required>
+                            <input type="tel" name="CustomerPhone" class="form-control" placeholder="Telefon" required>
+                            <textarea name="Notes" class="form-control" rows="4" placeholder="Herhangi bir isteğiniz var mı?"></textarea>
                         </div>
                     </div>
                 </form>
