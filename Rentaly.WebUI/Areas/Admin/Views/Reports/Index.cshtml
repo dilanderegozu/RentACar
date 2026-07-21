@@ -1,0 +1,266 @@
+﻿@model Rentaly.WebUI.Areas.Admin.Models.ReportsViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var occupiedPercent = Model.TotalCarCount > 0 ? Math.Round((double)Model.RentedCarCount / Model.TotalCarCount * 100, 1) : 0;
+}
+
+<main class="ml-[280px] min-h-screen p-xl space-y-xl">
+    <div class="flex flex-col gap-lg">
+        <div class="flex justify-between items-end">
+            <div>
+                <h2 class="font-h1 text-h1 text-on-surface">Raporlama Merkezi</h2>
+                <p class="text-body-md text-on-surface-variant mt-xs">Detaylı operasyonel ve finansal analizler.</p>
+            </div>
+            <div class="flex items-center gap-md">
+                <a asp-area="Admin" asp-controller="Reports" asp-action="ExportExcel"
+                   asp-route-branchId="@Context.Request.Query["branchId"]" asp-route-status="@Context.Request.Query["status"]"
+                   class="flex items-center gap-sm px-md py-2 bg-white border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors text-label-md font-label-md shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">table_view</span>
+                    Excel İndir
+                </a>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="ExportPdf"
+                   asp-route-branchId="@Context.Request.Query["branchId"]" asp-route-status="@Context.Request.Query["status"]"
+                   class="flex items-center gap-sm px-md py-2 bg-white border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors text-label-md font-label-md shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                    PDF İndir
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <form asp-area="Admin" asp-controller="Reports" asp-action="Index" method="get"
+              class="bg-white p-lg rounded-xl border border-outline-variant flex flex-wrap items-end gap-md">
+            <div class="flex flex-col gap-xs flex-1 min-w-[200px]">
+                <label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Şube Seçimi</label>
+                <select name="branchId" class="w-full h-11 px-md bg-surface-container-low border border-outline-variant rounded-lg font-label-md outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Tüm Şubeler</option>
+                    @foreach (var branch in Model.Branches)
+                    {
+                        <option value="@branch.BranchId">@branch.BranchName</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-xs flex-1 min-w-[200px]">
+                <label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Kiralama Durumu</label>
+                <select name="status" class="w-full h-11 px-md bg-surface-container-low border border-outline-variant rounded-lg font-label-md outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Tüm Durumlar</option>
+                    <option value="Available">Müsait</option>
+                    <option value="Rented">Kirada</option>
+                    <option value="Maintenance">Bakımda</option>
+                </select>
+            </div>
+            <button type="submit" class="h-11 px-lg bg-on-surface text-white rounded-lg font-label-md hover:bg-black transition-colors flex items-center gap-sm">
+                <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                Filtrele
+            </button>
+        </form>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-md">
+            <div class="p-3 bg-primary-container/10 text-primary rounded-xl w-fit">
+                <span class="material-symbols-outlined">directions_car</span>
+            </div>
+            <div>
+                <p class="text-on-surface-variant font-label-md text-label-md">Filo Özeti</p>
+                <h3 class="font-h1 text-h1 text-on-surface">@Model.TotalCarCount</h3>
+                <p class="text-[11px] text-on-surface-variant mt-1">@Model.RentedCarCount araç şu an kirada</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-md">
+            <div class="p-3 bg-secondary/10 text-secondary rounded-xl w-fit">
+                <span class="material-symbols-outlined">account_balance_wallet</span>
+            </div>
+            <div>
+                <p class="text-on-surface-variant font-label-md text-label-md">Toplam Ciro</p>
+                <h3 class="font-h1 text-h1 text-on-surface">@Model.TotalRevenue.ToString("C0")</h3>
+                <p class="text-[11px] text-on-surface-variant mt-1">İptal edilmeyen tüm rezervasyonlar</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-md">
+            <div class="p-3 bg-tertiary-container/10 text-tertiary rounded-xl w-fit">
+                <span class="material-symbols-outlined">analytics</span>
+            </div>
+            <div>
+                <p class="text-on-surface-variant font-label-md text-label-md">Ortalama Günlük Fiyat</p>
+                <h3 class="font-h1 text-h1 text-on-surface">@Model.AverageDailyPrice.ToString("C0")</h3>
+                <p class="text-[11px] text-on-surface-variant mt-1">@Model.TotalCarCount aracın ortalaması</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-md">
+            <div class="p-3 bg-primary/10 text-primary rounded-xl w-fit">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+            <div>
+                <p class="text-on-surface-variant font-label-md text-label-md">Operasyonel Durum</p>
+                <h3 class="font-h1 text-h1 text-on-surface">@Model.AvailableCarCount / @Model.RentedCarCount / @Model.MaintenanceCarCount</h3>
+                <p class="text-[11px] text-on-surface-variant mt-1">Müsait / Kirada / Bakımda</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Branch Distribution & Donut -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-outline-variant">
+            <div class="p-lg border-b border-outline-variant">
+                <h4 class="font-h3 text-h3 text-on-surface">Lokasyon Analizi</h4>
+                <p class="text-body-sm text-on-surface-variant">Şubelere göre araç dağılımı ve doluluk</p>
+            </div>
+            <div class="p-lg space-y-lg">
+                @foreach (var b in Model.BranchDistribution)
+                {
+                    var availPct = b.TotalCars > 0 ? (double)b.AvailableCount / b.TotalCars * 100 : 0;
+                    var rentedPct = b.TotalCars > 0 ? (double)b.RentedCount / b.TotalCars * 100 : 0;
+                    var maintPct = b.TotalCars > 0 ? (double)b.MaintenanceCount / b.TotalCars * 100 : 0;
+
+                    <div class="space-y-sm">
+                        <div class="flex justify-between text-label-md">
+                            <span class="text-on-surface">@b.BranchName</span>
+                            <span class="font-bold">@b.TotalCars Araç / %@b.OccupancyPercent Doluluk</span>
+                        </div>
+                        <div class="w-full h-3 bg-surface-container rounded-full overflow-hidden flex">
+                            <div class="h-full bg-primary-container" style="width: @availPct%;"></div>
+                            <div class="h-full bg-secondary" style="width: @rentedPct%;"></div>
+                            <div class="h-full bg-tertiary" style="width: @maintPct%;"></div>
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-xl flex flex-wrap gap-lg pt-lg border-t border-outline-variant">
+                    <div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-primary-container"></div><span class="text-label-sm text-on-surface-variant">Müsait</span></div>
+                    <div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-secondary"></div><span class="text-label-sm text-on-surface-variant">Kirada</span></div>
+                    <div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-tertiary"></div><span class="text-label-sm text-on-surface-variant">Bakımda</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-outline-variant flex flex-col self-start">
+            <div class="p-lg border-b border-outline-variant">
+                <h4 class="font-h3 text-h3 text-on-surface">Durum Takibi</h4>
+                <p class="text-body-sm text-on-surface-variant">Anlık filo operasyon durumu</p>
+            </div>
+            <div class="p-lg flex-1 flex flex-col items-center justify-center">
+                @{
+                    var availDash = Model.TotalCarCount > 0 ? (double)Model.AvailableCarCount / Model.TotalCarCount * 100 : 0;
+                    var rentedDash = Model.TotalCarCount > 0 ? (double)Model.RentedCarCount / Model.TotalCarCount * 100 : 0;
+                    var maintDash = Model.TotalCarCount > 0 ? (double)Model.MaintenanceCarCount / Model.TotalCarCount * 100 : 0;
+                }
+                <div class="relative w-48 h-48 mb-lg">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" fill="none" r="16" stroke="#edf6ea" stroke-width="4"></circle>
+                        <circle cx="18" cy="18" fill="none" r="16" stroke="#22c55e" stroke-dasharray="@availDash.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture), 100" stroke-width="4"></circle>
+                        <circle cx="18" cy="18" fill="none" r="16" stroke="#4b41e1" stroke-dasharray="@rentedDash.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture), 100" stroke-dashoffset="-@availDash.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)" stroke-width="4"></circle>
+                        <circle cx="18" cy="18" fill="none" r="16" stroke="#9e4036" stroke-dasharray="@maintDash.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture), 100" stroke-dashoffset="-@((availDash + rentedDash).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))" stroke-width="4"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="font-h2 text-h2 text-on-surface">@Model.TotalCarCount</span>
+                        <span class="text-label-sm text-on-surface-variant">Araç</span>
+                    </div>
+                </div>
+                <div class="w-full space-y-md">
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+                        <div class="flex items-center gap-sm"><span class="w-2 h-2 rounded-full bg-primary-container"></span><span class="text-label-md">Müsait Araçlar</span></div>
+                        <span class="font-bold">@Model.AvailableCarCount</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+                        <div class="flex items-center gap-sm"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="text-label-md">Kiradaki Araçlar</span></div>
+                        <span class="font-bold">@Model.RentedCarCount</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+                        <div class="flex items-center gap-sm"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="text-label-md">Bakımdaki Araçlar</span></div>
+                        <span class="font-bold">@Model.MaintenanceCarCount</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Table -->
+    <div class="bg-white rounded-xl border border-outline-variant overflow-hidden">
+        <div class="p-lg border-b border-outline-variant">
+            <h4 class="font-h3 text-h3 text-on-surface">Araç Bazlı Detaylı Rapor</h4>
+            <p class="text-body-sm text-on-surface-variant">Filodaki her aracın anlık durumu ve verimliliği</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-surface-container-low text-on-surface-variant uppercase text-[11px] font-bold tracking-widest">
+                    <tr>
+                        <th class="px-lg py-md">Araç Bilgisi</th>
+                        <th class="px-lg py-md">Şube / Lokasyon</th>
+                        <th class="px-lg py-md">Durum</th>
+                        <th class="px-lg py-md">Günlük Ücret</th>
+                        <th class="px-lg py-md">Doluluk</th>
+                        <th class="px-lg py-md">Toplam Kazanç</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                    @if (!Model.CarRows.Any())
+                    {
+                        <tr><td colspan="6" class="px-lg py-2xl text-center text-on-surface-variant">Kriterlere uygun araç bulunamadı.</td></tr>
+                    }
+                    @foreach (var car in Model.CarRows)
+                    {
+                        <tr class="hover:bg-surface-container/30 transition-colors">
+                            <td class="px-lg py-lg">
+                                <div class="flex items-center gap-md">
+                                    <div class="w-12 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden">
+                                        @if (!string.IsNullOrEmpty(car.ImageUrl))
+                                        {
+                                            <img alt="@car.CarName" class="object-cover w-full h-full" src="@car.ImageUrl" />
+                                        }
+                                        else
+                                        {
+                                            <span class="material-symbols-outlined text-primary">directions_car</span>
+                                        }
+                                    </div>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-on-surface">@car.PlateNumber</p>
+                                        <p class="text-label-sm text-on-surface-variant opacity-70">@car.CarName (@car.Year)</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-lg py-lg text-body-md">@car.BranchName</td>
+                            <td class="px-lg py-lg">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase bg-surface-container">@car.StatusText</span>
+                            </td>
+                            <td class="px-lg py-lg font-bold">@car.DailyPrice.ToString("C0")</td>
+                            <td class="px-lg py-lg">
+                                <div class="flex items-center gap-sm">
+                                    <div class="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary" style="width: @car.OccupancyPercent%;"></div>
+                                    </div>
+                                    <span class="text-label-sm font-bold">%@car.OccupancyPercent</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-lg font-bold text-primary">@car.TotalEarnings.ToString("C0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <div class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-between items-center">
+                <p class="text-label-sm text-on-surface-variant">Toplam @Model.TotalCarCount araçtan sayfa @Model.CurrentPage / @Model.TotalPages gösteriliyor</p>
+                <div class="flex items-center gap-xs">
+                    <a asp-area="Admin" asp-controller="Reports" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"
+                       asp-route-branchId="@Context.Request.Query["branchId"]" asp-route-status="@Context.Request.Query["status"]"
+                       class="p-xs hover:bg-surface-container rounded-lg @(Model.CurrentPage <= 1 ? "opacity-30 pointer-events-none" : "")">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </a>
+                    <span class="font-label-md px-md">Sayfa @Model.CurrentPage / @Model.TotalPages</span>
+                    <a asp-area="Admin" asp-controller="Reports" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)"
+                       asp-route-branchId="@Context.Request.Query["branchId"]" asp-route-status="@Context.Request.Query["status"]"
+                       class="p-xs hover:bg-surface-container rounded-lg @(Model.CurrentPage >= Model.TotalPages ? "opacity-30 pointer-events-none" : "")">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</main>
