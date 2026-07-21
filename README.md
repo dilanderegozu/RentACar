@@ -205,13 +205,5 @@ Admin paneline `/Admin/Dashboard` üzerinden erişilir.
 
 ---
 
-## 🔭 Yol Haritası
-
-* Admin panelinden doğrudan rezervasyon oluşturma akışı henüz eklenmedi.
-* Marka seçimine göre model dropdown'unu istemci tarafında filtreleyen kademeli (cascading) seçim yapısı planlanıyor.
-* Admin Area için kimlik doğrulama/yetkilendirme (ASP.NET Core Identity + rol bazlı politika) henüz uygulanmadı.
-* Raporlardaki doluluk oranı şu an "filoya katılalı geçen gün" bazlı hesaplanıyor; ileride hareketli 30/90 günlük pencereye geçilmesi daha isabetli bir metrik sunacaktır.
-
----
 
 *ASP.NET Core MVC üzerinde N-Tier mimari, EF Core ilişkisel modelleme ve admin panel UX'i üzerine uygulamalı bir öğrenme projesi olarak geliştirilmiştir.*
