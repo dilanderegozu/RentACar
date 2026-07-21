@@ -45,7 +45,6 @@ Proje 4 ana katman üzerine inşa edilmiştir:
 ### 🏎️ 1. Araç Detay Sayfası ve Galeri
 Kullanıcıların seçtikleri araç hakkında tüm teknik detaylara ulaştığı sayfadır.
 <img width="1889" height="653" alt="Ekran görüntüsü 2026-07-20 204358" src="https://github.com/user-attachments/assets/87e2c5af-68e4-4a2a-8142-c506ce117097" />
-<img width="1886" height="867" alt="Ekran görüntüsü 2026-07-20 204424" src="https://github.com/user-attachments/assets/f8997594-218c-47c5-930a-4bbbddd5973a" />
 <img width="1896" height="867" alt="Ekran görüntüsü 2026-07-20 204436" src="https://github.com/user-attachments/assets/d69ab637-f603-4def-824e-efb73e85c603" />
 
 
